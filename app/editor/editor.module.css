@@ -1,0 +1,30 @@
+.box {
+  min-height: 90vh;
+  display: grid;
+  justify-content: center;
+  padding: 50px;
+}
+.box_shell {
+  border: 1px solid black;
+  min-height: 500px;
+  width: 90vw;
+}
+.box_shell_editor {
+  border: 1px solid red;
+  padding: 20px;
+}
+.box_shell_editor #controls {
+  background-color: lightblue;
+  padding: inherit;
+}
+.box_shell_editor #content {
+  min-height: 400px;
+}
+.box_shell_editor #content #kernel {
+  margin-top: 30px;
+  width: 100%;
+  min-height: 300px;
+  outline: none;
+  font-size: 30px;
+  border: 1px solid gray;
+}/*# sourceMappingURL=editor.module.css.map */
