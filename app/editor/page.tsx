@@ -1,12 +1,15 @@
 "use client";
-import styles from './editor.module.scss';
+import styles from './css/editor.module.scss';
 import { saveAs } from 'file-saver'; // To save files on client-side
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { asBlob } from 'html-docx-js-typescript'
 import { junk } from './text.js';
-
+import { StylingBar } from '../components/stylingbar/stylingbar';
 export default function Test() {
   const pageContentRef = useRef<HTMLDivElement>(null);
+  const [documentContent, setDocumentContent] = useState(junk);
+  const [range, setRange] = useState<Range | null>(null);
+  const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
 
   const downloadDoc = async () => {
     try {
@@ -26,32 +29,43 @@ export default function Test() {
     minHeight: "735px"
   };
 
-  const chageFontSize = (id:string, by:number) => {
-    const element = document.getElementById(id);
-    const fontSize = document.getElementById("fontSize");
-
-    const currentFontSize = window.getComputedStyle(element!).fontSize;
-    const newFontSize = parseInt(currentFontSize) + by;    
-    element!.style.fontSize = newFontSize + "px";
-    fontSize!.innerText = newFontSize + "px";
+  const handleSelection = (event: React.MouseEvent<HTMLElement>) => {
+    const selectionTarget = event.target as HTMLElement;
+    const selection = window.getSelection();
+    if(!selection) return;
+    const range = selection.getRangeAt(0);
+    getFontSizeFromRange(range);
+    if (selectionTarget.contains(range.startContainer) && selectionTarget.contains(range.endContainer)) {
+      setRange(range);
+      setTargetElement(selectionTarget);
+    }
   }
-  const changeTextStyle = (
-    id: string,
-    style: string
-  ) => {
-    const textElement = document.getElementById(id);
-    const { fontWeight, fontStyle, textDecoration } = textElement!.style;
-    switch (style) {
-      case "bold":
-        const newFontWeight = fontWeight === '600' ? '400' : '600';
-        return textElement!.style.fontWeight = newFontWeight;
-      case "italic":
-        const newFontStyle = fontStyle === 'italic' ? 'normal' : 'italic';
-        return textElement!.style.fontStyle = newFontStyle;
-      case "underline":
-        const newTextDecoration =  textDecoration === 'underline' ? 'none' : 'underline';
-        textElement!.style.textDecoration = newTextDecoration;
+
+  const getFontSizeFromRange = (range: Range): string | null => {
+    // Clone the contents of the range to extract nodes
+    const fragment = range.cloneContents();
+    const nodes = Array.from(fragment.childNodes);
+    let fontSize: string | null = null;
+    console.log(nodes);
+
+    for (const node of nodes) {
+      console.log(node, node.nodeType);
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as HTMLElement;
+        const computedStyle = window.getComputedStyle(element);
+        const currentFontSize = computedStyle.fontSize;
+  
+        if (!fontSize) {
+          // Set the initial fontSize
+          fontSize = currentFontSize;
+        } else if (fontSize !== currentFontSize) {
+          // Handle cases where font sizes differ
+          console.warn('Mixed font sizes in range');
+          return null; // Or handle this case as needed
+        }
       }
+    }
+    return fontSize;
   };
   
   
@@ -60,22 +74,20 @@ export default function Test() {
     <div className={styles.box}>
       <div className={styles.box_shell}>
         <div className={styles.box_shell_editor}>
-          <div id={styles.controls}>
-          <button onClick={()=>chageFontSize("test", -1)}>----</button>
-          <strong id='fontSize'>20px</strong>
-          <button onClick={()=>chageFontSize("test", 1)}>++++</button>
-          <button onClick={()=>changeTextStyle("test", "bold")}>Bold</button>
-          <button onClick={()=>changeTextStyle("test", "italic")}>Italic</button>
-          <button onClick={()=>changeTextStyle("test", "underline")}>Underlined</button>
+          <StylingBar 
+            range={range}
+            targetElement={targetElement}
+          />
           <button onClick={downloadDoc}>DOWNLOAD</button>
-          </div>
           <div id={styles.content} ref={pageContentRef}>
               <div 
                 contentEditable 
                 id="test"
                 style={editorGeneralStyles}
+                onMouseUp={handleSelection}
               >
-                  { junk }
+                  <h1 id='freedom' style={{border:'2px solid deeppink'}}>Code you Way to Freedom</h1>
+                  { documentContent }
               </div>
           </div>
         </div>

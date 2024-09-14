@@ -19,10 +19,6 @@
   justify-content: center;
   width: 900px;
 }
-.box_shell_editor #controls {
-  background-color: lightblue;
-  padding: inherit;
-}
 .box_shell_editor #content {
   display: flex;
   justify-content: center;
