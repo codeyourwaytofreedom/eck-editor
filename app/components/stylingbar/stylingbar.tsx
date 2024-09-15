@@ -2,28 +2,14 @@ import styles from './css/stylingbar.module.scss';
 
 interface StylingBarProps {
     range: Range | null,
-    targetElement: HTMLElement | null
+    targetElement: HTMLElement | null,
+    isBlockElement: boolean | undefined
 }
 
 export const StylingBar:React.FC<StylingBarProps> = ({range, targetElement}) => {
   const targetId = new Date().getTime().toString();
-  const changeTextStyle = (
-    style: string | number | 'left' | 'right' | 'center' | 'justify'
 
-  ) => {
-    const existentTarget = document.getElementById(targetId);
-    const replacement = existentTarget || document.createElement('span');
-    if( !existentTarget ) {
-      const computedStyles = window.getComputedStyle(targetElement!);
-      const { fontWeight, fontStyle, textDecoration, fontSize } = computedStyles;
-      //transfer existing styling
-      replacement.style.fontWeight = fontWeight;
-      replacement.style.fontStyle = fontStyle;
-      replacement.style.textDecoration = textDecoration;
-      replacement.style.fontSize = fontSize;
-      replacement.id = targetId;
-      range!.surroundContents(replacement);
-    }
+  const applyStyle = (replacement:HTMLElement,style:string | number | 'left' | 'right' | 'center' | 'justify') => {
     const { fontWeight, fontStyle, textDecoration, fontSize } = replacement!.style;
     if( typeof style === 'number' ) {
       const newFontSize = parseInt(fontSize) + style;
@@ -46,6 +32,27 @@ export const StylingBar:React.FC<StylingBarProps> = ({range, targetElement}) => 
         case 'justify':
           replacement!.style.textAlign = style;
     }
+  }
+  
+  const changeTextStyle = (
+    style: string | number | 'left' | 'right' | 'center' | 'justify'
+
+  ) => {
+    if(!targetElement) return;
+    const existentTarget = document.getElementById(targetId);
+    const replacement = existentTarget || document.createElement('span');
+    if( !existentTarget ) {
+      const computedStyles = window.getComputedStyle(targetElement!);
+      const { fontWeight, fontStyle, textDecoration, fontSize } = computedStyles;
+      //transfer existing styling
+      replacement.style.fontWeight = fontWeight;
+      replacement.style.fontStyle = fontStyle;
+      replacement.style.textDecoration = textDecoration;
+      replacement.style.fontSize = fontSize;
+      replacement.id = targetId;
+      range!.surroundContents(replacement);
+    }
+    applyStyle(replacement,style);
   };
   
   return (

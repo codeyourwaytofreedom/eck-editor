@@ -7,9 +7,10 @@ import { junk } from './text.js';
 import { StylingBar } from '../components/stylingbar/stylingbar';
 export default function Test() {
   const pageContentRef = useRef<HTMLDivElement>(null);
-  const [documentContent, setDocumentContent] = useState(junk);
+  const [documentContent] = useState(junk);
   const [range, setRange] = useState<Range | null>(null);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
+  const [isBlockElement, setIsBlockElement] = useState<boolean|undefined>();
 
   const downloadDoc = async () => {
     try {
@@ -32,43 +33,19 @@ export default function Test() {
   const handleSelection = (event: React.MouseEvent<HTMLElement>) => {
     const selectionTarget = event.target as HTMLElement;
     const selection = window.getSelection();
-    if(!selection) return;
+    const target = window.getComputedStyle(selectionTarget);
+    const display = target.display || 'undefined';
+    const isBlockElement = !['inline', 'inline-block','inline-flex', 'undefined'].includes(display);
+    setIsBlockElement(isBlockElement);
+    if(!selection) {
+      return;
+    } 
     const range = selection.getRangeAt(0);
-    getFontSizeFromRange(range);
     if (selectionTarget.contains(range.startContainer) && selectionTarget.contains(range.endContainer)) {
       setRange(range);
       setTargetElement(selectionTarget);
     }
   }
-
-  const getFontSizeFromRange = (range: Range): string | null => {
-    // Clone the contents of the range to extract nodes
-    const fragment = range.cloneContents();
-    const nodes = Array.from(fragment.childNodes);
-    let fontSize: string | null = null;
-    console.log(nodes);
-
-    for (const node of nodes) {
-      console.log(node, node.nodeType);
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        const element = node as HTMLElement;
-        const computedStyle = window.getComputedStyle(element);
-        const currentFontSize = computedStyle.fontSize;
-  
-        if (!fontSize) {
-          // Set the initial fontSize
-          fontSize = currentFontSize;
-        } else if (fontSize !== currentFontSize) {
-          // Handle cases where font sizes differ
-          console.warn('Mixed font sizes in range');
-          return null; // Or handle this case as needed
-        }
-      }
-    }
-    return fontSize;
-  };
-  
-  
 
   return (
     <div className={styles.box}>
@@ -77,6 +54,7 @@ export default function Test() {
           <StylingBar 
             range={range}
             targetElement={targetElement}
+            isBlockElement={isBlockElement}
           />
           <button onClick={downloadDoc}>DOWNLOAD</button>
           <div id={styles.content} ref={pageContentRef}>
@@ -87,6 +65,8 @@ export default function Test() {
                 onMouseUp={handleSelection}
               >
                   <h1 id='freedom' style={{border:'2px solid deeppink'}}>Code you Way to Freedom</h1>
+                  <li>LOL1</li>
+                  <li>LOL2</li>
                   { documentContent }
               </div>
           </div>
