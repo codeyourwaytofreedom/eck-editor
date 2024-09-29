@@ -23,7 +23,6 @@
   display: flex;
   justify-content: center;
   width: 900px;
-  border: 2px solid blue;
+  border: 1px solid silver;
   margin: 80px 0;
-  height: 735px;
 }/*# sourceMappingURL=editor.module.css.map */
