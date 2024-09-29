@@ -41,7 +41,7 @@ export default function Test() {
                 id="test"
                 style={editorGeneralStyles}
               >
-                  <strong>kaegajeg</strong>
+                  <b>kaegajeg</b>
                     <i>some italic rome <u>underlined in it</u> text</i> lol 
                     <u> some more underlined</u>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos assumenda vitae cupiditate  maxime accusantium eius ducimus architecto excepturi ab, hic provident.
