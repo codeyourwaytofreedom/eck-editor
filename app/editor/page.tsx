@@ -22,7 +22,8 @@ export default function Test() {
     fontFamily: 'Georgia',
     width: "625px",
     minHeight: "735px",
-    textAlign: "justify"
+    textAlign: "justify",
+    outline: 'none'
   };
 
 
