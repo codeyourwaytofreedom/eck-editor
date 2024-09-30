@@ -1,7 +1,7 @@
 "use client";
 import styles from './css/editor.module.scss';
 import { saveAs } from 'file-saver'; // To save files on client-side
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { asBlob } from 'html-docx-js-typescript'
 import { StylingBar } from '../components/stylingbar/stylingbar';
 export default function Test() {
@@ -26,6 +26,24 @@ export default function Test() {
     outline: 'none'
   };
 
+  useEffect(() => {
+    const checkSelection = () => {
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const selectedText = selection.toString();
+        if (selectedText.length === 0) {
+          document.getElementById('start')?.remove();
+          document.getElementById('end')?.remove();
+        }
+      }
+    };
+
+    document.addEventListener('selectionchange', checkSelection);
+
+    return () => {
+      document.removeEventListener('selectionchange', checkSelection);
+    };
+  }, []);
 
   return (
     <div className={styles.box}>
