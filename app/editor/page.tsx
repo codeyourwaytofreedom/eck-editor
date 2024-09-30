@@ -45,7 +45,11 @@ export default function Test() {
                     <i>some italic rome <u>underlined in it</u> text</i> lol 
                     <u> some more underlined</u>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos assumenda vitae cupiditate  maxime accusantium eius ducimus architecto excepturi ab, hic provident.
-                    <em>some em <u>very underline <b>bold inside underlined</b>  element</u> </em>
+                    <i>some em <u>very underline <b>bold inside underlined</b>  element</u> </i>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+{/*                     <span id='start'></span>
+                    <b>Sapiente, deserunt molestias perferendis porro vitae sint voluptas</b>
+                    <span id='end'></span> */}
               </div>
           </div>
           <div id='converter'>
