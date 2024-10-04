@@ -147,8 +147,6 @@ export const replaceTextNodesWithSpan = (step: number, node: Node, size?:string)
 }
 
 
-
-
 export   const  keepSelection = () => {
   const container = document.getElementById('test');
   const visualiser = document.getElementById('visualiser');
