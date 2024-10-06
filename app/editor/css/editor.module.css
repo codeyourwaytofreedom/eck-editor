@@ -5,14 +5,13 @@
   padding: 50px;
 }
 .box_shell {
-  border: 1px solid black;
   height: 1000px;
   width: 90vw;
   display: flex;
-  justify-content: end;
+  justify-content: center;
 }
 .box_shell_editor {
-  border: 1px solid red;
+  border: 1px solid silver;
   padding: 20px;
   padding-bottom: 0;
   display: grid;
@@ -20,9 +19,12 @@
   width: 900px;
 }
 .box_shell_editor #content {
-  display: flex;
-  justify-content: center;
-  width: 900px;
-  border: 1px solid silver;
-  margin: 80px 0;
+  position: relative;
+  padding: 0;
+}
+.box_shell_editor #content #anchor {
+  position: absolute;
+  left: -120px;
+  font-size: 20px;
+  color: deeppink;
 }/*# sourceMappingURL=editor.module.css.map */
