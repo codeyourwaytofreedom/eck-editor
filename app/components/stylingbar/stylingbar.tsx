@@ -80,13 +80,13 @@ const  changeFontSize = (step:number, size?:string) => {
         const existingFontSize = parseInt(parentElement.style.fontSize.replace('pt', ''));
         parentElement.style.fontSize = size ?? (existingFontSize + step) + 'pt';
         parentElement.style.lineHeight = 1.17 * parseInt(parentElement.style.fontSize.replace('pt', '')) + 'pt';
-        parentElement.style.display = 'inline-block';
+        //parentElement.style.display = 'inline-block';
       } else {
         const existingFontSize = getParentFontSize(node)!;
         const span = document.createElement('span');
         span.style.fontSize = size ?? parseInt(existingFontSize.replace('pt', '')) + step + 'pt';
         span.style.lineHeight = 1.17 * parseInt(span.style.fontSize.replace('pt', '')) + 'pt';
-        span.style.display = 'inline-block';
+        //span.style.display = 'inline-block';
         span.textContent = node.textContent;
         node.replaceWith(span);
       }

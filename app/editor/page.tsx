@@ -12,18 +12,9 @@ export default function Test() {
 
   const downloadDoc = async () => {
     try {
-      const anchors = document.querySelectorAll('.anchor');
-
-      anchors.forEach((anchor) => {
-        anchor.style.display = 'none';
-      });
       const content =(pageContentRef.current)!.innerHTML;
       const docxBlob = await asBlob(content);
       saveAs(docxBlob as Blob, 'page-content.docx');
-
-      anchors.forEach((anchor) => {
-        anchor.style.display = 'inline';
-      });
     } catch (error) {
       console.error("Error generating docx:", error);
     }
@@ -31,11 +22,11 @@ export default function Test() {
 
   const editorGeneralStyles: React.CSSProperties = {
     fontSize: "15pt", 
-    fontFamily: 'Arial',
+    fontFamily: 'Times',
     width: "468pt",
     textAlign: "justify",
     minHeight:"540pt",
-    //outline:'none'
+    outline:'none'
   };
 
 
@@ -98,11 +89,6 @@ export default function Test() {
           />
           <div id='visualiser' style={{border:'2pt solid orange', height: '200px', display:'none'}}></div> 
           <div id={styles.content} ref={pageContentRef} >
-              {
-                [...Array(8)].map((e,i)=>
-                  <span className='anchor' id={styles.anchor} style={{ top: i * 548 - ( i === 0 ? 11 : 0 ) + 'pt' }} key={i}>-----------------</span>
-                )
-              }
               <div 
                 contentEditable 
                 id="test"

@@ -133,10 +133,12 @@ export const replaceTextNodesWithSpan = (step: number, node: Node, size?:string)
       if (parentElement && parentElement.tagName === 'SPAN' && parentElement.style.fontSize) {
         const existingFontSize = parseInt(parentElement.style.fontSize.replace('px', ''));
         parentElement.style.fontSize = size ?? (existingFontSize + step) + 'px';
+        parentElement.style.lineHeight = 1.17 * parseInt(parentElement.style.fontSize.replace('pt', '')) + 'pt';
       } else {
         const existingFontSize = getParentFontSize(node) || '16px';
         const span = document.createElement('span');
         span.style.fontSize = size ?? parseInt(existingFontSize.replace('px', '')) + step + 'px';
+        span.style.lineHeight = 1.17 * parseInt(span.style.fontSize.replace('pt', '')) + 'pt';
         span.textContent = child.textContent;
         node.replaceChild(span, child);
       }
